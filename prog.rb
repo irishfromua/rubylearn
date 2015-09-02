@@ -1,8 +1,9 @@
 #task manager
 #
 #operations:
-# - input task
 # - show tasks
+# - input task
+# - delete task
 # - save tasks
 
 class Tasks
@@ -30,6 +31,25 @@ class Tasks
 
   def select_command
     @command = gets.chomp
+    case @command
+      when "a"
+        puts "add task"
+        add_task_to_array
+      when "d"
+        if array_check != 0       
+          puts "delete"
+          show_tasks
+          delete_task_from_array
+        else
+          puts "error"
+        end
+      when "q"
+        save_tasks_to_file
+        puts "save & quit"
+        abort
+      else
+        puts "error"
+    end
   end 
 
   def add_task_to_array
@@ -63,6 +83,7 @@ class Tasks
     end
   end
 
+  def array_check
+    @tarr.length
+  end
 end
-
-

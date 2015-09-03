@@ -16,11 +16,16 @@ class Tasks
     @tarr.length
   end
 
+  def mode_message(message)
+    puts "\n" + message
+  end
+
   def error_message(code = @command)
     puts code + " not available"
   end
 
   def show_tasks
+    puts "\n"
     i = 0
     @tarr.each do |x|
       puts i.to_s + " - " + x
@@ -43,11 +48,12 @@ class Tasks
     @command = gets.chomp
     case @command
       when "a"
-        puts "add task"
+        mode_message("add task mode")
+        show_tasks
         add_task_to_array
       when "e"
         if array_check != 0
-          puts "edit task"
+          mode_message("edit task mode")
           show_tasks
           edit_task
         else
@@ -55,7 +61,7 @@ class Tasks
         end
       when "d"
         if array_check != 0       
-          puts "delete"
+          mode_message("delete task mode")
           show_tasks
           delete_task_from_array
         else
@@ -63,7 +69,7 @@ class Tasks
         end
       when "q"
         save_tasks_to_file
-        puts "save & quit"
+        mode_message("save & quit")
         abort
       else
         error_message()
@@ -71,7 +77,7 @@ class Tasks
   end 
 
   def add_task_to_array
-    print "Task: "
+    print "New task: "
     @task = gets.chomp
     @tarr << @task
   end

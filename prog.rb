@@ -12,43 +12,61 @@ class Tasks
     @tarr = Array.new
   end
 
+  def array_check
+    @tarr.length
+  end
+
+  def error_message(code = @command)
+    puts code + " not available"
+  end
+
   def show_tasks
     i = 0
     @tarr.each do |x|
       puts i.to_s + " - " + x
       i += 1
     end
-    puts "Tasks' amount: " + @tarr.length.to_s 
+    puts "Tasks' amount: " + array_check.to_s 
   end
 
   def show_menu
-    puts "[a] - add"
-    if @tarr.length != 0
-      puts "[d] - delete"
+    print "[a] - add "
+    if array_check != 0
+      print "[e] - edit "
+      print "[d] - delete "
     end
     puts "[q] - quit"
   end
 
   def select_command
+    print "Command: "
     @command = gets.chomp
     case @command
       when "a"
         puts "add task"
         add_task_to_array
+      when "e"
+        if array_check != 0
+          puts "edit task"
+          show_tasks
+          edit_task
+        else
+          error_message()
+        end
       when "d"
         if array_check != 0       
           puts "delete"
           show_tasks
           delete_task_from_array
         else
-          puts "error"
+          error_message()
         end
       when "q"
         save_tasks_to_file
         puts "save & quit"
         abort
       else
-        puts "error"
+        error_message()
     end
   end 
 
@@ -58,13 +76,26 @@ class Tasks
     @tarr << @task
   end
 
+  def edit_task
+    print "Task number: "
+    @tnum = gets.chomp.to_i
+    if @tnum >= 0 && @tnum <= array_check
+      puts "Old redaction: " + @tarr[@tnum].to_s
+      print "New redaction: "
+      @new_red = gets.chomp
+      @tarr[@tnum] = @new_red
+    else
+      error_message(@tnum.to_s)
+    end
+  end
+
   def delete_task_from_array
     print "Task number: "
     @tnum = gets.chomp.to_i
-    if @tnum >= 0 && @tnum <= @tarr.length
+    if @tnum >= 0 && @tnum <= array_check
       @tarr.delete_at(@tnum)
     else
-      puts "#{@tnum} not exist"
+      error_message(@tnum.to_s)
       return 
     end
   end
@@ -83,7 +114,4 @@ class Tasks
     end
   end
 
-  def array_check
-    @tarr.length
-  end
 end

@@ -3,6 +3,7 @@
 #operations:
 # - show tasks
 # - input task
+# - edit task
 # - delete task
 # - save tasks
 
@@ -10,6 +11,11 @@ class Tasks
 
   def initialize
     @tarr = Array.new
+    @mes = { :add => "add task mode",
+             :edit => "edit task mode",
+             :delete => "delete task mode",
+             :quit => "save & quit"
+            }
   end
 
   def array_check
@@ -21,7 +27,7 @@ class Tasks
   end
 
   def error_message(code = @command)
-    puts code + " not available"
+    puts "\n" + code + " not available"
   end
 
   def show_tasks
@@ -31,7 +37,7 @@ class Tasks
       puts i.to_s + " - " + x
       i += 1
     end
-    puts "Tasks' amount: " + array_check.to_s 
+    puts "Tasks' amount: " + array_check.to_s
   end
 
   def show_menu
@@ -48,20 +54,20 @@ class Tasks
     @command = gets.chomp
     case @command
       when "a"
-        mode_message("add task mode")
+        mode_message(@mes[:add])
         show_tasks
         add_task_to_array
       when "e"
         if array_check != 0
-          mode_message("edit task mode")
+          mode_message(@mes[:edit])
           show_tasks
           edit_task
         else
           error_message()
         end
       when "d"
-        if array_check != 0       
-          mode_message("delete task mode")
+        if array_check != 0
+          mode_message(@mes[:delete])
           show_tasks
           delete_task_from_array
         else
@@ -69,12 +75,12 @@ class Tasks
         end
       when "q"
         save_tasks_to_file
-        mode_message("save & quit")
+        mode_message(@mes[:quit])
         abort
       else
         error_message()
     end
-  end 
+  end
 
   def add_task_to_array
     print "New task: "
@@ -102,7 +108,7 @@ class Tasks
       @tarr.delete_at(@tnum)
     else
       error_message(@tnum.to_s)
-      return 
+      return
     end
   end
 

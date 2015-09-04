@@ -1,11 +1,14 @@
 #task manager
 #
 #operations:
-# - show tasks
-# - input task
-# - edit task
-# - delete task
-# - save tasks
+# + show tasks
+# + input task
+# + edit task
+# + delete task
+# + save tasks to file
+# + load tasks from file
+# + mode & error messages
+# - change task's status
 
 class Tasks
 
@@ -19,7 +22,7 @@ class Tasks
     @status = "planned"
   end
 
-  def array_check
+  def tamount
     @tarr.length
   end
 
@@ -32,7 +35,7 @@ class Tasks
   end
 
   def length_of_longest_string
-    if @tarr.length != 0
+    if tamount != 0
       @length = @tarr.max_by(&:length).length
     else
       @length = 10
@@ -41,7 +44,7 @@ class Tasks
   end
 
   def header
-    if @tarr.length != 0
+    if tamount != 0
       l = length_of_longest_string
       puts "N".ljust(3) + "Task".ljust(l) + "  " + "Status".ljust(10)
     end
@@ -56,13 +59,14 @@ class Tasks
       puts i.to_s.ljust(3) + x.ljust(l) + "  " + @status.ljust(10)
       i += 1
     end
-    puts "Tasks' amount: " + array_check.to_s
+    puts "Tasks' amount: " + tamount.to_s
   end
 
   def show_menu
     print "(a)dd "
-    if array_check != 0
+    if tamount != 0
       print "(e)dit "
+      print "(s)tatus "
       print "(d)elete "
     end
     puts "(q)uit"
@@ -77,15 +81,23 @@ class Tasks
         show_tasks
         add_task_to_array
       when "e"
-        if array_check != 0
+        if tamount != 0
           mode_message(@mes[:edit])
           show_tasks
           edit_task
         else
           error_message()
         end
+      when "s"
+        if tamount != 0
+          mode_message(@mes[:status])
+          show_tasks
+          change_status
+        else
+          error_message()
+        end
       when "d"
-        if array_check != 0
+        if tamount != 0
           mode_message(@mes[:delete])
           show_tasks
           delete_task_from_array
@@ -114,7 +126,7 @@ class Tasks
   def edit_task
     print "Task number: "
     @tnum = gets.chomp.to_i
-    if @tnum >= 0 && @tnum <= array_check
+    if @tnum >= 0 && @tnum <= tamount
       puts "Old redaction: " + @tarr[@tnum].to_s
       print "New redaction: "
 
@@ -131,7 +143,7 @@ class Tasks
   def delete_task_from_array
     print "Task number: "
     @tnum = gets.chomp.to_i
-    if @tnum >= 0 && @tnum <= array_check
+    if @tnum >= 0 && @tnum <= tamount
       @tarr.delete_at(@tnum)
     else
       error_message(@tnum.to_s)

@@ -104,7 +104,9 @@ class Tasks
   def add_task_to_array
     print "New task: "
     @task = gets.chomp
-    @tarr << @task
+    if @task != ""
+      @tarr << @task
+    end
   end
 
   def edit_task

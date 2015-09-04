@@ -60,12 +60,12 @@ class Tasks
   end
 
   def show_menu
-    print "[a] - add "
+    print "(a)dd "
     if array_check != 0
-      print "[e] - edit "
-      print "[d] - delete "
+      print "(e)dit "
+      print "(d)elete "
     end
-    puts "[q] - quit"
+    puts "(q)uit"
   end
 
   def select_command
@@ -103,10 +103,12 @@ class Tasks
 
   def add_task_to_array
     print "New task: "
+
     @task = gets.chomp
     if @task != ""
       @tarr << @task
     end
+
   end
 
   def edit_task
@@ -115,8 +117,12 @@ class Tasks
     if @tnum >= 0 && @tnum <= array_check
       puts "Old redaction: " + @tarr[@tnum].to_s
       print "New redaction: "
+
       @new_red = gets.chomp
-      @tarr[@tnum] = @new_red
+        if @new_red != ""
+          @tarr[@tnum] = @new_red
+        end
+
     else
       error_message(@tnum.to_s)
     end

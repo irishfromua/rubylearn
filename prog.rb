@@ -11,11 +11,12 @@ class Tasks
 
   def initialize
     @tarr = Array.new
-    @mes = { :add => "add task mode",
-             :edit => "edit task mode",
-             :delete => "delete task mode",
-             :quit => "save & quit"
+    @mes = { :add     => "add task mode",
+             :edit    => "edit task mode",
+             :delete  => "delete task mode",
+             :quit    => "save & quit"
             }
+    @status = "planned"
   end
 
   def array_check
@@ -30,11 +31,29 @@ class Tasks
     puts "\n" + code + " not available"
   end
 
+  def length_of_longest_string
+    if @tarr.length != 0
+      @length = @tarr.max_by(&:length).length
+    else
+      @length = 10
+    end
+    return @length
+  end
+
+  def header
+    if @tarr.length != 0
+      l = length_of_longest_string
+      puts "N".ljust(3) + "Task".ljust(l) + "  " + "Status".ljust(10)
+    end
+  end
+
   def show_tasks
+    l = length_of_longest_string
     puts "\n"
+    header
     i = 0
     @tarr.each do |x|
-      puts i.to_s + " - " + x
+      puts i.to_s.ljust(3) + x.ljust(l) + "  " + @status.ljust(10)
       i += 1
     end
     puts "Tasks' amount: " + array_check.to_s
